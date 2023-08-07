@@ -1,0 +1,50 @@
+body {
+    background-color: rgb(72, 175, 203);
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.counter {
+    padding: 20px;
+    font-size: 50px;
+    font-weight: 100;
+}
+
+.errorMessage {
+    color: red;
+    font-weight: bolder;
+    font-size: larger;
+}
+
+.green {
+    color: green;
+    font-size: xx-large;
+}
+
+.red {
+    color: red;
+    font-size: xx-large;
+}
+
+button {
+    box-shadow: 0 0 1rem black;
+    transition: 5s ease;
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    margin: 10px;
+}
+
+button:hover {
+    box-shadow: none;
+}
+
+.enteredName {
+    height: 25px;
+    border-radius: 8px;
+    border: none;
+}
+
+.helloName {
+    font-size: xx-large;
+}
