@@ -1,24 +1,43 @@
-<h1>Greetings</h1>
-  <p class="helloName">{{greeting}}</p>
-  <p class="counter" style="display: inline;">{{counter}}</p>
-<br>
-<br>
+<h1><a href="/greeted">Greetings</a></h1>
+{{#if error}}
+  <p class="red">{{error}}</p>
+{{/if}}
+<p class="helloName">{{greeting}}</p>
+<p class="counter" style="display: inline;">{{counter}}</p>
+<br />
+<br />
 <form action="/" method="POST">
   <div>
     <label for="name">Name:</label>
     <input type="text" name="name" value="" class="enteredName" />
   </div>
-  <br>
+  <br />
   <div class="box-radio">
-    <input type="radio" name="language" value="english" class="language" id="english" />
+    <input
+      type="radio"
+      name="language"
+      value="english"
+      class="language"
+      id="english"
+    />
     <label for="english">English</label>
-    <input type="radio" name="language" value="xhosa" class="language" id="xhosa" />
+    <input
+      type="radio"
+      name="language"
+      value="xhosa"
+      class="language"
+      id="xhosa"
+    />
     <label for="xhosa">isiXhosa</label>
-    <input type="radio" name="language" value="afrikaans" class="language" id="afrikaans" />
+    <input
+      type="radio"
+      name="language"
+      value="afrikaans"
+      class="language"
+      id="afrikaans"
+    />
     <label for="afrikaans">Afrikaans</label>
   </div><br />
-  <div>
     <button class="greetButton" type="submit" name="button">Greet</button>
-    <button class="resetCounterButton" type="submit" name="button">Reset counter</button>
-  </div>
+  <button class="resetCounterButton" type="submit" name="button">Reset</button>
 </form>

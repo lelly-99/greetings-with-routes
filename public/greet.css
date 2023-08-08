@@ -48,3 +48,12 @@ button:hover {
 .helloName {
     font-size: xx-large;
 }
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+a:hover {
+    color: blue; 
+}
