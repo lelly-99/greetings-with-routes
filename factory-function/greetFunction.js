@@ -28,7 +28,6 @@ export default function greet() {
   function addName(name) {
     const userName = setName(name);
     const user = userNames.find(user => user.name === userName);
-  
     if (!user) {
       userNames.push({ name: userName, greetCount: 1 });
     } else {
@@ -67,7 +66,11 @@ export default function greet() {
   function reset() {
     counter = 0;
     userNames = [];
+    userLanguage = "";
+    userName = "";
+    greet = "";
   }
+  
 
   function getUserGreetCount(userName) {
     return (userNames.find(user => user.name === userName) || {}).greetCount || 0;

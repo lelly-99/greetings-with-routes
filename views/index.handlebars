@@ -1,15 +1,21 @@
-<h1><a href="/greeted">Greetings</a></h1>
-{{#if error}}
-  <p class="red">{{error}}</p>
-{{/if}}
+
+<script>
+      setTimeout(function() {
+        document.querySelector('.red').innerHTML = '';
+      }, 2000);
+    </script>
+<h1>Greeting</h1>
 <p class="helloName">{{greeting}}</p>
 <p class="counter" style="display: inline;">{{counter}}</p>
 <br />
 <br />
 <form action="/" method="POST">
+{{#if messages.error}}
+    <p class="red">{{messages.error}}</p>
+  {{/if}}
   <div>
     <label for="name">Name:</label>
-    <input type="text" name="name" value="" class="enteredName" />
+    <input type="text" name="name" value="" class="enteredName"/>
   </div>
   <br />
   <div class="box-radio">
@@ -37,7 +43,30 @@
       id="afrikaans"
     />
     <label for="afrikaans">Afrikaans</label>
-  </div><br />
-    <button class="greetButton" type="submit" name="button">Greet</button>
-  <button class="resetCounterButton" type="submit" name="button">Reset</button>
-</form>
+  </div>
+  <br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-1">
+      <form action="/" method="POST" class="form-inline d-flex justify-content-end">
+        <div class="form-group me-2">
+                    <button class="greetButton btn btn-custom" type="submit" name="button" style="background-color: cyan; border-color: cyan; color: #212529">Greet</button>
+          
+        </div>
+      </form>
+    </div>
+    <div class="col-md-1">
+      <form action="/reset" method="POST" class="form-inline d-flex justify-content-start">
+        <div class="form-group ms-2">
+<button class="resetCounterButton btn btn-custom" type="submit" name="button" style="background-color: cyan; border-color: cyan; color: #212529">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<br>
+<p><a href="/greeted" class="nav-link text-info">Click here to see greeted users</a></p>
+
+
+
+
