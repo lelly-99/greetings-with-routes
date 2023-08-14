@@ -42,24 +42,22 @@ app.post("/", function (req, res) {
   const name = req.body.name;
   const language = req.body.language;
 
-
   if (!name.match(/^[A-Za-z]+$/) && !language) {
     req.flash("error", "Enter a valid name and select a language");
   } else if (!name.match(/^[A-Za-z]+$/)) {
     req.flash("error", "Enter a valid name");
   } else if (!language) {
     req.flash("error", "Select a language");
-  } else if(language){
+  } else if (greetFunction.nameExists(name)) {
+    req.flash("error", "Name already exists");
+  } else {
     greetFunction.setLanguage(language);
     greetFunction.setName(name);
-  }
-  if (greetFunction.nameExists(name)) {
-    req.flash("error", "User with the same name already exists");
-  } else {
     greetFunction.addName(name);
   }
   res.redirect('/');
 });
+
 
 app.get("/greeted", function (req, res) {
   const greetedNames = greetFunction.getNames().map((name) => ({

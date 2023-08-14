@@ -29,30 +29,34 @@ export default function greet() {
     return userNames.map(user => user.name);
   }
 
-  function addNameForUser(name) {
-    const userName = setName(name);
-    const user = userNames.find(user => user.name === userName);
-    if (!user) {
-      userNames.push({ name: userName, greetCount: 1 });
-    } else {
-      user.greetCount++;
+  function addNameForUser(userName) {
+    for (let i = 0; i < userNames.length; i++) {
+      if (userNames[i].name === userName) {
+        userNames[i].greetCount++;
+        return userNames[i].greetCount;
+      }
     }
-    userCount++;
-    return userCount;
+    return 0; 
   }
-
+  
   function addName(name) {
     const userName = setName(name);
-    if (!userNames.some(user => user.name === userName)) {
-      userNames.push({ name: userName, greetCount: 0 }); 
-      counter = userNames.length;
+    let isNewUser = true;
+    for (let i = 0; i < userNames.length; i++) {
+      if (userNames[i].name === userName) {
+        isNewUser = false;
+        break;
+      }
     }
-    return counter;
+    if (isNewUser) {
+      userNames.push({ name: userName, greetCount: 0 });
+    }
+    return counter++;
   }
 
   function greetUser() {
     if (userLanguage !== "" && userName.match(/^[A-Za-z]+$/)) {
-      addNameForUser(userName);
+      const userGreetCount = addNameForUser(userName);
       if (userLanguage === "english") {
         greet = "Hi " + userName;
       } else if (userLanguage === "afrikaans") {
@@ -60,8 +64,9 @@ export default function greet() {
       } else if (userLanguage === "xhosa") {
         greet = "Molo " + userName;
       }
-    } else if (!getNames().includes(userName) && userLanguage !== "" && userName.match(/^[A-Za-z]+$/)){
-      addName(userName);
+      userCount = userGreetCount;
+    } else if (!getNames().includes(userName) && userLanguage !== "" && userName.match(/^[A-Za-z]+$/)) {
+      const newGreetCount = addName(userName);
       if (userLanguage === "english") {
         greet = "Hi " + userName;
       } else if (userLanguage === "afrikaans") {
@@ -69,9 +74,11 @@ export default function greet() {
       } else if (userLanguage === "xhosa") {
         greet = "Molo " + userName;
       }
+      userCount = newGreetCount;
     }
     return greet;
   }
+  
 
   function errorMessage() {
     if (!userName.match(/^[A-Za-z]+$/) && userLanguage === "") {
@@ -93,12 +100,24 @@ export default function greet() {
   }
 
   function getUserGreetCount(userName) {
-    return (userNames.find(user => user.name === userName) || {}).greetCount || 0;
+    for (let i = 0; i < userNames.length; i++) {
+      if (userNames[i].name === userName) {
+        return userNames[i].greetCount;
+      }
+    }
+    return 0;
   }
-
+  
   function nameExists(name) {
     const formattedName = setName(name);
-    return userNames.some(user => user.name === formattedName);
+  
+    for (let i = 0; i < userNames.length; i++) {
+      if (userNames[i].name === formattedName) {
+        return true;
+      }
+    }
+  
+    return false;
   }
 
   return {
