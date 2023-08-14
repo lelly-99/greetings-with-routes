@@ -5,8 +5,10 @@ import greet from "./factory-function/greetFunction.js";
 import flash from "connect-flash";
 import session from "express-session";
 
+
 const app = express();
 const greetFunction = greet();
+// var connectionString = "postgres://lelly:cHkFvXlgaIdPvAue4lxbMVEkSdRsuiLh@dpg-cjad3vue546c738aonpg-a/lelly_99_greetings_with_routes"
 
 app.use(
   session({
@@ -40,7 +42,6 @@ app.post("/", function (req, res) {
   const name = req.body.name;
   const language = req.body.language;
 
-  greetFunction.setName(name);
 
   if (!name.match(/^[A-Za-z]+$/) && !language) {
     req.flash("error", "Enter a valid name and select a language");
@@ -50,9 +51,16 @@ app.post("/", function (req, res) {
     req.flash("error", "Select a language");
   } else if(language){
     greetFunction.setLanguage(language);
+    greetFunction.setName(name);
+  }
+  if (greetFunction.nameExists(name)) {
+    req.flash("error", "User with the same name already exists");
+  } else {
+    greetFunction.addName(name);
   }
   res.redirect('/');
 });
+
 app.get("/greeted", function (req, res) {
   const greetedNames = greetFunction.getNames().map((name) => ({
     name,
@@ -64,7 +72,7 @@ app.get("/greeted", function (req, res) {
 app.get("/counter/:name", function (req, res) {
   const name = req.params.name;
   const greetCount = greetFunction.getUserGreetCount(name);
-  const counter = greetFunction.getCounter();
+  const counter = greetFunction.getCounterForUser();
   res.render("counter", { name, greetCount, counter });
 });
 

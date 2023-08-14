@@ -13,17 +13,15 @@
 
 .red {
     color: red;
-    font-size: xx-large;
+    font-size: large;
 }
 
 .enteredName {
-    border-color: cyan;
+    border-color:  linear-gradient(90deg, rgba(33,37,41,1) 0%, rgba(0,255,255,1) 54%);;
     border-width: 0.5px;
     border-radius: 5px;
 }
-.box-radio input[type="radio"] {
-    border-color: cyan;
-  }
+
 .helloName {
     font-size: xx-large;
 }
