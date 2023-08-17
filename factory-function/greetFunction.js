@@ -29,9 +29,9 @@ export default function greet() {
     return userNames.map(user => user.name);
   }
 
-  function addNameForUser(userName) {
+  function addNameForUser(name) {
     for (let i = 0; i < userNames.length; i++) {
-      if (userNames[i].name === userName) {
+      if (userNames[i].name === setName(name)) {
         userNames[i].greetCount++;
         return userNames[i].greetCount;
       }
@@ -56,7 +56,7 @@ export default function greet() {
 
   function greetUser() {
     if (userLanguage !== "" && userName.match(/^[A-Za-z]+$/)) {
-      const userGreetCount = addNameForUser(userName);
+       addNameForUser(userName);
       if (userLanguage === "english") {
         greet = "Hi " + userName;
       } else if (userLanguage === "afrikaans") {
@@ -64,9 +64,9 @@ export default function greet() {
       } else if (userLanguage === "xhosa") {
         greet = "Molo " + userName;
       }
-      userCount = userGreetCount;
+    
     } else if (!getNames().includes(userName) && userLanguage !== "" && userName.match(/^[A-Za-z]+$/)) {
-      const newGreetCount = addName(userName);
+      addName(userName);
       if (userLanguage === "english") {
         greet = "Hi " + userName;
       } else if (userLanguage === "afrikaans") {
@@ -74,12 +74,10 @@ export default function greet() {
       } else if (userLanguage === "xhosa") {
         greet = "Molo " + userName;
       }
-      userCount = newGreetCount;
     }
     return greet;
   }
   
-
   function errorMessage() {
     if (!userName.match(/^[A-Za-z]+$/) && userLanguage === "") {
       error = "Enter a valid name and select a language";
