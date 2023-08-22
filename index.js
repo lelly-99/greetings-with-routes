@@ -100,7 +100,8 @@ app.post("/reset", async function (req, res) {
   await data.reset();
   greetFunction.reset(), res.redirect("/");
 });
-const PORT = process.env.PORT || 3047;
+
+const PORT = process.env.PORT || 3007;
 app.listen(PORT, function () {
   console.log("App started at port:", PORT);
 });
