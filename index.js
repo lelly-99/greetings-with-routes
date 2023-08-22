@@ -6,6 +6,7 @@ import flash from "connect-flash";
 import session from "express-session";
 // import dotenv from 'dotenv';
 import pgPromise from "pg-promise";
+import query from "./service/query.js";
 
 const pgp = pgPromise();
 
@@ -18,9 +19,10 @@ if (process.env.DATABASE_URL && !local) {
 // which db connection to use
 const connectionString =
   process.env.DATABASE_URL ||
-  'postgres://lelly:cHkFvXlgaIdPvAue4lxbMVEkSdRsuiLh@dpg-cjad3vue546c738aonpg-a/lelly_99_greetings_with_routes'
+  "postgres://lelly:cHkFvXlgaIdPvAue4lxbMVEkSdRsuiLh@dpg-cjad3vue546c738aonpg-a.oregon-postgres.render.com/lelly_99_greetings_with_routes?ssl=true";
 
-const db = pgp(connectionString);
+const database = pgp(connectionString);
+const data = query(database);
 
 // dotenv.config();
 const greetFunction = greet();
@@ -45,33 +47,19 @@ app.use(function (req, res, next) {
   res.locals.messages = req.flash();
   next();
 });
-// app.get("/counter/:name", function (req, res) {
-//   const name = req.params.name;
-//   const greetCount = greetFunction.getUserGreetCount(name);
-//   const counter = greetFunction.getCounterForUser();
-//   res.render("counter", { name, greetCount, counter });
-// });
-
-// app.post("/reset", function (req, res) {
-//   greetFunction.reset();
-//   res.redirect('/');
-// });
-// const PORT = process.env.PORT || 3007;
-// app.listen(PORT, function () {
-//   console.log("App started at port:", PORT);
-// });
 
 app.get("/", async function (req, res) {
-  const greetedNames = await db.any("SELECT * FROM names");
+  const countOne = await data.updateCount();
+  const counter = countOne.count;
   res.render("index", {
     greeting: greetFunction.greetUser(),
-    counter: greetFunction.getCounter(),
-    greetedNames: greetedNames,
+    counter,
   });
 });
 
 app.post("/", async function (req, res) {
-  const name = req.body.name;
+  const names = req.body.name;
+  const name = names.toLowerCase();
   const language = req.body.language;
 
   if (!name.match(/^[A-Za-z]+$/) && !language) {
@@ -80,54 +68,39 @@ app.post("/", async function (req, res) {
     req.flash("error", "Enter a valid name");
   } else if (!language) {
     req.flash("error", "Select a language");
-  } else if (greetFunction.nameExists(name)) {
-    req.flash("error", "Name already exists");
+    // } else if (greetFunction.nameExists(name)) {
+    //   req.flash("error", "Name already exists");
   } else {
     greetFunction.setLanguage(language);
     greetFunction.setName(name);
+    await data.insert(name);
     greetFunction.addName(name);
-    await db.none(
-      "INSERT INTO names (greetedNames, greetCount) VALUES ($1, 1)",
-      [name]
-    );
   }
   res.redirect("/");
 });
-// app.get("/greeted", function (req, res) {
-//   const greetedNames = greetFunction.getNames().map((name) => ({
-//     name,
-//     greetCount: greetFunction.getUserGreetCount(name),
-//   }));
-//   res.render("greeted", { greetedNames });
-// });
-
 app.get("/greeted", async function (req, res) {
-  const greetedNames = await db.any("SELECT * FROM names")
-  res.render("greeted", { greetedNames });
+  const greetedData = await data.greeted();
+  res.render("greeted", { greetedData });
 });
-
 
 app.get("/counter/:name", async function (req, res) {
   const name = req.params.name;
-  const user = await db.oneOrNone(
-    "SELECT * FROM names WHERE greetedNames = $1",
-    [name]
-  );
-  if (user) {
-    const greetCount = user.greetCount;
-    const counter = await db.one("SELECT SUM(greetCount) as total FROM names");
-    res.render("counter", { name, greetCount, counter: counter.total });
-  } else {
-    res.render("counter", { name, greetCount: 0, counter: 0 });
+  const counter = await data.count(name);
+  //how do we work with the null value on the object??
+  // console.log(counter)
+  if (counter !== null) {
+    res.render("counter", {
+      name,
+      counter: counter.sum,
+    });
   }
 });
 
 app.post("/reset", async function (req, res) {
-  await db.none("TRUNCATE TABLE names");
-  res.redirect("/");
+  await data.reset();
+  greetFunction.reset(), res.redirect("/");
 });
-
-const PORT = process.env.PORT || 3007;
+const PORT = process.env.PORT || 3047;
 app.listen(PORT, function () {
   console.log("App started at port:", PORT);
 });
