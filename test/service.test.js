@@ -43,14 +43,6 @@ describe('Greeting with routes database', function(){
         assert.deepStrictEqual({ count: '4' }, updatedCount);
     });
     
-    it('should count the number of times "Lee" was greeted', async function() {
-        await data.insert("Lee");
-        await data.insert("Lee");
-        await data.insert("Lee");
-        const count = await data.count("Lee");
-        assert.deepStrictEqual({ sum: '3' }, count);
-    });
-    
     it('should count the number of times Lelly was greeted', async function() {
         await data.insert("Lelly");
         await data.insert("Lelly");
