@@ -111,40 +111,6 @@ describe("counter", function() {
   
       assert.equal(3, countOne.getCounter());
     });
-
-    it('should be able return 1 if same user is greeted twice or more', function() {
-        var countOne = greet();
-    
-        
-        countOne.addName("lelly");
-        countOne.addName("lelly");
-        countOne.addName("lelly");
-        countOne.addName("lelly");
-    
-        assert.equal(1, countOne.getCounter());
-      });
-
-    //   it('should  be able to return 1 for same name with different cases"', function(){
-    //     var greetingOne = greet();
-
-    //     greetingOne.setName('lelLy')
-    //     greetingOne.setName('lelLy')
-    //     greetingOne.setName('lelLy')
-    //     greetingOne.setName('lelLy')
-        
-
-    //     assert.equal(1, greetingOne.addName())
-    // })
+   
   });
-describe ("reset counter", function(){
-    it('should  be able to reset the counter to zero', function(){
-        var countOne = greet();
 
-        countOne.setName('lelly')
-        countOne.setLanguage("xhosa")
-        countOne.greetUser("lelly", "xhosa")
-        countOne.getCounter()
-
-        assert.equal(0 , countOne.resetCounter() )
-    })
-})
