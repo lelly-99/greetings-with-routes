@@ -31,7 +31,7 @@ describe('Greeting with routes database', function(){
     it('should insert a name into the database', async function() {
         await data.insert("Lee");
         const count = await data.count("Lee");
-        assert.deepStrictEqual({ sum: '1' }, count);
+        assert.deepEqual({ sum: '1' }, count);
     });
     
     it('should update the count for names greeted', async function() {
@@ -40,7 +40,7 @@ describe('Greeting with routes database', function(){
         await data.insert("Lesego");
         await data.insert("Lethabo");
         const updatedCount = await data.updateCount();
-        assert.deepStrictEqual({ count: '4' }, updatedCount);
+        assert.deepEqual({ count: '4' }, updatedCount);
     });
     
     it('should count the number of times Lelly was greeted', async function() {
@@ -51,7 +51,7 @@ describe('Greeting with routes database', function(){
         await data.insert("Lelly");
         await data.insert("Lelly");
         const count = await data.count("Lelly");
-        assert.deepStrictEqual({ sum: '6' }, count);
+        assert.deepEqual({ sum: '6' }, count);
     });
     after(function(){
         pgp.end();
