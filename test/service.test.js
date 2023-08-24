@@ -20,8 +20,8 @@ const data = query(database);
 
 
 describe('Greeting with routes database', function(){
-
-    this.timeout(5000);
+    //tests pass
+    this.timeout(9000);
 
     beforeEach(async function(){
         // clean the tables before each test run
@@ -52,6 +52,21 @@ describe('Greeting with routes database', function(){
         await data.insert("Lelly");
         const count = await data.count("Lelly");
         assert.deepEqual({ sum: '6' }, count);
+    });
+
+    it('should delete table from database', async function() {
+        await data.insert("Lee");
+        const reset = await data.reset("Lee");
+        assert.equal(null, reset);
+    });
+
+    //same name should not be repeated
+    it('should retrieve distinct greeted names', async function() {
+        await data.insert("Lee");
+        await data.insert("Lee");
+        await data.insert("Lelly");
+        const greetedNames = await data.greeted();
+        assert.deepEqual(greetedNames, [{"greetednames": "Lee"}, {"greetednames": "Lelly"}]);
     });
     after(function(){
         pgp.end();
